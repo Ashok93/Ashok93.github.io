@@ -4,12 +4,12 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+Computer Science + Robotics
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+Hi guys. I like to work at the intersection of computer science and robotics. Currently pursuing my masters of engineering in Robotics from Ecole Centrale de Nantes, France. I was a web developer earlier. I am also fond of user experience. Contact me to know more!
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[ashok.kannan93@gmail.com](mailto:ashok.kannan93@gmail.com)
