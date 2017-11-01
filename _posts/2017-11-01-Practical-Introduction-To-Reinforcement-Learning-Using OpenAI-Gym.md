@@ -28,10 +28,10 @@ import gym
 env = gym.make('CartPole-v0')
 ```
 
-if you donot find any errors: 
- 	congrats! 
-else: 
-	Please refer <https://gym.openai.com/docs/> for installation if you have any issues.  
+if you donot find any errors:   
+ 	congrats!  
+else:  
+	Please refer <https://gym.openai.com/docs/> for installation if you have any issues.    
 
 ## APPROACH
 
