@@ -12,7 +12,7 @@ This post will be a gentle practical introduction to RL. We are going to get our
 As we can see that the **`gym`** environment has observation and action. **`Observation`** is the observation made once an action is taken on the environment. They depict the current state of the enviroment after some action is taken. Imagine it to be the sensor information of the robot after some action is taken by the robot. **`Action`** is the action that the agent can perform on the environment. Imagine it to be moving the robot arm using actuators. **`reward`** is the reward that is given for every action that is made. Generally, the reward function is defined by the user. I hope this gives an abstract idea of what are the various terminologies that we are going to use and their significance.
 
 
-### Installing gym
+## INSTALLING GYM
 
 ```python
 #if you have pip, use
@@ -33,16 +33,16 @@ if you donot find any errors:
 else:  	
 	Please refer <https://gym.openai.com/docs/> for installation if you have any issues.  
 
-### APPROACH
+## APPROACH
 
 The carpole challenge is to prevent the pendulum from falling over. It is a very simple challenge in openAI environment.
 
 First we will start with a random approach, where we try to solve the cartpole problem with random set of parameters. Then we will try using a hill climb approach to figure out the optimum parameter. Finally we can make use of DQN(Deep Q Network) to solve the same problem.
 
 
-### CODE
+## CODE
 
-## Random Approach
+### Random Approach
 
 We first will try using a random approach to try to solve the problem. In cart pole example, there are four observables/state values. We first randomly initialize four parameters, multiply with the observables/state and then decide based on the result to take one of two discrete actions(push left or right). We do this for a number of episodes, say 1000, and then see the reward that we get for the action that we make. In cart pole, the problem is considered solved if the reward is >= 200. Thus we can use this a termination point to break the loop to find the optimum set of parameters.
 
