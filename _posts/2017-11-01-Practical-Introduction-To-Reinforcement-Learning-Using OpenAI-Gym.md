@@ -28,17 +28,16 @@ import gym
 env = gym.make('CartPole-v0')
 ```
 
-if you donot find any errors:  	
- 	congrats!  	 
-else:  	
+if you donot find any errors: 
+ 	congrats! 
+else: 
 	Please refer <https://gym.openai.com/docs/> for installation if you have any issues.  
 
 ## APPROACH
 
 The carpole challenge is to prevent the pendulum from falling over. It is a very simple challenge in openAI environment.
 
-First we will start with a random approach, where we try to solve the cartpole problem with random set of parameters. Then we will try using a hill climb approach to figure out the optimum parameter. Finally we can make use of DQN(Deep Q Network) to solve the same problem.
-
+First we will start with a random approach, where we try to solve the cartpole problem with random set of parameters. We will then implement a DQN(Deep Q Network) for the same problem.
 
 ## CODE
 
