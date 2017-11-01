@@ -12,7 +12,7 @@ As we can see that the `gym` environment has observation and action. `Observatio
 
 ### Installing gym
 
-```
+```python
 	#if you have pip, use
 	pip install gym #for python 2.7
 	pip3 install gym #for python 3
@@ -20,7 +20,7 @@ As we can see that the `gym` environment has observation and action. `Observatio
 
 To check if you have it installed,
 
-```
+```python
 	#in the python try
 	import gym
 	env = gym.make('CartPole-v0')
