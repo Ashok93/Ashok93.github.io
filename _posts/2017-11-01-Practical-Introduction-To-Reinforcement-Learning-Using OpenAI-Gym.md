@@ -103,7 +103,7 @@ If you run the code, we can see that the random approach does quite well for thi
 
 The random approach was pretty simple and effective in solving this particualar problem. But if the complexity of the problem increases, also if the problem tends to get more non linear, then you will see that our random approach will never be able to predict the optimal parameter. In these cases, we switch to more sophosticated algorithms. One such algorithm in reinforcement learning is the Deep Q Network.
 
-Deep Q Learning is basically Q Learning algorithm applied to the deep learning. I dont want to get into details of deep learning as this is out of the scope of the article. I am planning to write an article on the neural networks and deep learning soon. 
+Deep Q Learning is basically Q Learning algorithm applied to the deep learning. I dont want to get into details of deep learning as this is out of the scope of the article. I am planning to write an article on the neural networks and deep learning soon.
 
 Q-learning is a model free reinforcement learning technique. The main idea of Q learning is to find a optimal action-selection policy for a given process(Markov Decision Process). A policy is a rule that the agent follows in selecting actions, given the state it is in. When such an action-value function is learned, the optimal policy can be constructed by simply selecting the action with the highest value in each state.
 
@@ -126,4 +126,55 @@ model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
 ```
 
 Here we just say that our model has two hidden layer of 24 nodes and one output layer having two nodes(`self.action_size`). In order of NN to learn from the data, we use `fit` method passing it the input and output. Something like `model.fit(state, reward)`. After training the model, we can use the `predict` function, to predict the reward for the given state. From this you can see that the NN studies/interprets the pattern between the input and the output.
+
+The entire premise of reinforcement learning is to allow the agent to perform an action on the environment and get rewarded for the action. From the action - reward pair, the agent learns to perform the optimal action that maximizes the reward for it.
+
+The following are the tuning parameters that are essentially used for the algorithm,
+
+```python
+learning_rate
+exploration_rate
+min_exploration_rate
+exploration_rate_decay
+discount_factor
+```
+
+`learning_rate` is the learning rate value that we feed to our Neural Network. `exploration_rate` is an important parameter that is very useful for such algorithm. During initial phases of learning, since we might not have enough knowledge about the problem that we work on, the agent might not be able to progress if it keeps trying to guess from its learning only. This parameter lets the algorithm to take some random actions on the environment during the initial phases of the exploration, which is pretty useful to explore new actions and their rewards. `min_exploration_rate` is the minimum cut off value that we give for our exploration process. `exploration_rate_decay` is the rate of decay for each iteration. Basically, we need maximum exploration rate initially during the program and lower exploration during the later part since by that time the algorithm might have learned some information about the optimal path from its previous experiences. `discount_factor` is another important parameter, that forms the core of this learning algorithm. `discount_factor` decides the weightage that you provide to the previous rewards. We will talk about it in brief soon.
+
+If you feel many things not making sense, kindly try to stick around and at the end please run through the code in the link that will be provided at the end. Hopefully it will makes some things clear.
+
+For a number of episodes(iterations), we perform the action on the environment. We then store the reward, action, state, next_state every time. We then replay some of these action once again where our learning occurs.  
+
+```python
+def replay(self, batch_size):
+		mini_batch = random.sample(self.memory, batch_size)
+		
+		for state, action, reward, next_state, done in mini_batch:
+			actions = self.model.predict(state)
+			
+			actions[0][action] = reward
+			if not done:
+				actions[0][action] = (reward + self.discount_factor * np.amax(self.model.predict(next_state)[0]))
+
+			self.model.fit(state, actions, epochs=1, verbose=0)
+```
+
+We repeat the process until we get `done` flag to true or if `t` is greater that `200`(if we can survive 200 iterations without the catpole falling down - defined in the problem statement).
+
+I have only explained the crucial aspects of the program. The complete code is available in the github link <https://github.com/Ashok93/OpenAI-Cartpole/blob/master/cartpole-DQN.py>
+
+
+I know I have missed a lot of information in this article. I will keep editing this article to make it better. This was one long pending article that I wanted to complete. Finally! :D
+
+Extras (Nothing to do with the article):
+
+Things I learnt:
+	1) I have a long way to go to become a decent blogger.
+	2) I must learn to keep things concise and clear.
+	3) I must break large articles into small articles and write in regular intervals of periods.
+	4) Commitment towards writing.(the hardest)
+
+
+Thanks for reading! Feel free to contact me for opinions/suggestions. I would love to hear from you and improve on my writing. Merci!
+
 
