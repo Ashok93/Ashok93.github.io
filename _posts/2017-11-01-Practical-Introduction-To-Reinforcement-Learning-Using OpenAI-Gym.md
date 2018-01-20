@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Practical Introduction to Reinforcement Learning Using OpenAI `gym`
+title: A Practical Introduction to Reinforcement Learning Using OpenAI `gym`
 ---
 
 ![an image alt text]({{ site.baseurl }}/images/cartpole.gif "Cart Pole")
@@ -47,38 +47,9 @@ We first will try using a random approach to try to solve the problem. In cart p
 
 The code for random approach is given below.
 
+First we define a `train_model` function, where we create a gym environment and run loop for some episodes(say 10000). For every episode, we randomly pick 4 parameters(There are 4 observables in our problem) and we run the episode using `run_episode` function to calculate the reward. If we can get the reward of 200 then we can consider the problem solved. The code snippet is provided below.
+
 ```python
-import numpy as np
-import gym
-
-def run_episode(env, params):
-	observation = env.reset() #this has the env measurables such as angle, pos of cart etc. 4 values/params
-	total_reward = 0
-	
-	for _ in range(200):
-		env.render()
-		action = 0 if np.matmul(params, observation) < 0 else 1
-		observation, reward, done, info = env.step(action)
-		total_reward += reward
-
-		if done:
-			break
-
-	return total_reward
-
-def run_successful_episode(env, params):
-	observation = env.reset()
-
-	while True:
-		env.render()
-		action = 0 if np.matmul(params, observation) < 0 else 1
-		observation, reward, done, info = env.step(action)
-
-		if done:
-			print("Balanced the pole successfully")
-			break
-
-
 def train_model():
 	env = gym.make('CartPole-v0')
 	best_reward = 0
@@ -100,18 +71,59 @@ def train_model():
 			break
 
 	return counter, best_param
+```
 
-if __name__ == '__main__':
-	no_of_tries, params = train_model()
 
-	print('Total tries made by the program to find optimum parameter for balancing is ', no_of_tries)
-	print('The parameters for successful control are ', params)
-	print('Running successful solution....')
+The `run_episode` function takes the random parameters as input and iterates (200) times and takes action on the environment based on the parameters and observation(`np.matmul(params, observation)`). The function returns the total reward. 
 
-	env = gym.make('CartPole-v0')
-	run_successful_episode(env, params)	
+```python
+def run_episode(env, params):
+	observation = env.reset() #this has the env measurables such as angle, pos of cart etc. 4 values/params
+	total_reward = 0
+	
+	for _ in range(200):
+		env.render()
+		action = 0 if np.matmul(params, observation) < 0 else 1
+		observation, reward, done, info = env.step(action)
+		total_reward += reward
+
+		if done:
+			break
+
+	return total_reward
 
 ```
 
+The entire code for this can be found in my github link: <https://github.com/Ashok93/OpenAI-Cartpole/blob/master/cartpole-random.py>
+
 If you run the code, we can see that the random approach does quite well for this problem almost solving it easily finding optimum parameters in less than 20 episodes.
+
+
+### Deep Q Network
+
+The random approach was pretty simple and effective in solving this particualar problem. But if the complexity of the problem increases, also if the problem tends to get more non linear, then you will see that our random approach will never be able to predict the optimal parameter. In these cases, we switch to more sophosticated algorithms. One such algorithm in reinforcement learning is the Deep Q Network.
+
+Deep Q Learning is basically Q Learning algorithm applied to the deep learning. I dont want to get into details of deep learning as this is out of the scope of the article. I am planning to write an article on the neural networks and deep learning soon. 
+
+Q-learning is a model free reinforcement learning technique. The main idea of Q learning is to find a optimal action-selection policy for a given process(Markov Decision Process). A policy is a rule that the agent follows in selecting actions, given the state it is in. When such an action-value function is learned, the optimal policy can be constructed by simply selecting the action with the highest value in each state.
+
+Here is the wiki link for the Q learning algo: <https://en.wikipedia.org/wiki/Q-learning>
+
+We will use Keras as deep learning library as it is super simple to build DNN models using them. I am using tensor flow backend.
+
+If you are not familiar with neural networks and their working, consider the neural network as a black box containing one giant optimization problem or finding some patterns between input and output. This post is only intended to apply and see RL algorithms in action. 
+
+We will be using a NN with one input layer and three hidden layers. The image below shows only two hidden layers but we will be using three. There are two outputs(0 and 1) depicting the action to be made in the game. 
+
+Using Keras, the model implementation is as simples as code shown below.
+
+```python
+model = Sequential()
+model.add(Dense(24, input_dim=self.state_size, activation = 'relu'))
+model.add(Dense(24, activation='relu'))
+model.add(Dense(self.action_size, activation='linear'))
+model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+```
+
+Here we just say that our model has two hidden layer of 24 nodes and one output layer having two nodes(`self.action_size`). In order of NN to learn from the data, we use `fit` method passing it the input and output. Something like `model.fit(state, reward)`. After training the model, we can use the `predict` function, to predict the reward for the given state. From this you can see that the NN studies/interprets the pattern between the input and the output.
 
