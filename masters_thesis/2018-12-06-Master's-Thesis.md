@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Proposal
+title: Master's Thesis
 ---
 
 ## Tracker for Master's Thesis
